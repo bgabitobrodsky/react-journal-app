@@ -11,6 +11,7 @@ export const AppTheme = ({children}) => {
 		<CssBaseline />
 
 		{ children }
+		
 	</ThemeProvider>
   )
 }

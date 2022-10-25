@@ -1,7 +1,14 @@
-import React from 'react'
+import { Typography } from '@mui/material'
+import { JournalLayout } from '../layout'
 
 export const JournalPage = () => {
   return (
-	<div>JournalPage</div>
+    <JournalLayout>
+        <Typography>asd</Typography>
+
+
+        {/* NothingSelected */}
+
+    </JournalLayout>
   )
 }
