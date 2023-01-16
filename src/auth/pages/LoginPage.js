@@ -14,8 +14,8 @@ export const LoginPage = () => {
 	const dispatch = useDispatch();
 
 	const { email, password, onInputChange, formState } = useForm({
-		email: 'bernardogabito@gmail.com',
-		password: '123456'
+		email: '',
+		password: ''
 	})
 
 	const isAuthenticating = useMemo( () => status === 'checking', [status] )
