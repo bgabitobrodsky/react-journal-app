@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux"
 
 import Swal from "sweetalert2"
 import 'sweetalert2/dist/sweetalert2.css';
-import { DeleteOutline, SaveOutlined, UploadOutlined } from "@mui/icons-material"
+import { CloseOutlined, DeleteOutline, SaveOutlined, UploadOutlined } from "@mui/icons-material"
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material"
 
 import { useForm } from "../../hooks"
-import { setActiveNote, startDeletingNote, startFileUpload, startSaveNote } from "../../store/journal"
+import { removeActive, setActiveNote, startDeletingNote, startFileUpload, startSaveNewNote, startSaveNote, startSavingNewNote, startUpdateNote } from "../../store/journal"
 import { ImageGallery } from "../components"
 
 export const NoteView = () => {
@@ -32,14 +32,18 @@ export const NoteView = () => {
 
 	useEffect(() => {
 	  	if( messageSaved.length > 0 ){
-			Swal.fire( 'Nota actualizada', messageSaved, 'success' );
+			Swal.fire( messageSaved, '' , 'success' );
 		}
 	
 	}, [ messageSaved ])
 	
 	
 	const onSaveNote = () => {
-		dispatch( startSaveNote() );
+        if( !!note.id ){
+            dispatch( startUpdateNote() );
+        }else{
+            dispatch( startSaveNewNote() );
+        }
 	}
 
 	const onFileInputChange = ({ target }) => {
@@ -49,13 +53,28 @@ export const NoteView = () => {
 	}
 
     const onDelete = () => {
-        dispatch( startDeletingNote() );
+        if( !!note.id ){
+            dispatch( startDeletingNote() );
+        }else{
+            dispatch( removeActive() );
+        }
+    }
+
+    const onClose = () => {
+        dispatch( removeActive() );
     }
 
 	return (
-		<Grid container direction='row' justifyContent='space-between' sx={{ mb: 1 }}>
-			<Grid item>
-				<Typography fontSize={ 39 } fontWeight='light'>{ dateString }</Typography>
+        <Grid container direction='row' justifyContent='space-between' alignItems='center' sx={{ mb: 1 }}>
+            {
+                ( !note.id )?
+                <Grid container>
+                <Typography fontSize={ 30 }> New Note </Typography>
+                </Grid>
+                : null                
+            }
+            <Grid item>
+				<Typography fontSize={ 20 } fontWeight='light'>{ dateString }</Typography>
 			</Grid>
 			<Grid item>
 				<input 
@@ -121,6 +140,14 @@ export const NoteView = () => {
                 >
                     <DeleteOutline />
                     Borrar
+                </Button>
+                <Button
+                    onClick={ onClose }
+                    sx={{ mt:2 }}
+                    color="primary"
+                >
+                    <CloseOutlined />
+                    Cerrar
                 </Button>
             </Grid>
 

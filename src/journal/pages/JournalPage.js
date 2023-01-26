@@ -3,7 +3,7 @@ import { JournalLayout } from '../layout'
 import { NoteView, NothingSelectedView } from '../view'
 import { AddOutlined } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
-import { startNewNote } from '../../store/journal/thunks'
+import { createNewNote } from '../../store/journal'
 
 export const JournalPage = () => {
 
@@ -12,7 +12,7 @@ export const JournalPage = () => {
   const dispatch = useDispatch();
 
   const onClickNewNote = () => {
-    dispatch( startNewNote() );
+    dispatch( createNewNote() );
   }
 
   return (

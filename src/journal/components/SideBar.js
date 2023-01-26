@@ -19,8 +19,8 @@ export const SideBar = ({drawerWidth = 240}) => {
 					'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth}
 				}}
 			>
-				<Toolbar variant='h6' component='div'>
-					<Typography> { displayName }</Typography>
+				<Toolbar>
+					<Typography variant='h6' component='div'> { displayName }</Typography>
 				</Toolbar>
 
 				<List>
