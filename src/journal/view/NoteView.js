@@ -1,73 +1,30 @@
-import { useEffect, useMemo, useRef } from "react"
-import { useDispatch, useSelector } from "react-redux"
-
-import Swal from "sweetalert2"
-import 'sweetalert2/dist/sweetalert2.css';
 import { CloseOutlined, DeleteOutline, SaveOutlined, UploadOutlined } from "@mui/icons-material"
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material"
 
-import { useForm } from "../../hooks"
-import { removeActive, setActiveNote, startDeletingNote, startFileUpload, startSaveNewNote, startSaveNote, startSavingNewNote, startUpdateNote } from "../../store/journal"
 import { ImageGallery } from "../components"
+import { useNoteView } from "../hooks/useNoteView";
 
 export const NoteView = () => {
 
-	const dispatch = useDispatch();
-
-	const { active: note, messageSaved, isSaving } = useSelector( state => state.journal );
-
-	const { body, title, date, onInputChange, formState } = useForm( note );
-
-	const dateString = useMemo(() => {
-		const newDate = new Date( date );
-		return newDate.toUTCString();
-	}, [ date ]);
-
-	const fileInputRef = useRef();
-
-	useEffect(() => {
-	  	dispatch( setActiveNote( formState ));
-	
-	}, [ formState ]);
-
-	useEffect(() => {
-	  	if( messageSaved.length > 0 ){
-			Swal.fire( messageSaved, '' , 'success' );
-		}
-	
-	}, [ messageSaved ])
-	
-	
-	const onSaveNote = () => {
-        if( !!note.id ){
-            dispatch( startUpdateNote() );
-        }else{
-            dispatch( startSaveNewNote() );
-        }
-	}
-
-	const onFileInputChange = ({ target }) => {
-		if( target.files === 0 ) return;
-
-		dispatch( startFileUpload( target.files ));
-	}
-
-    const onDelete = () => {
-        if( !!note.id ){
-            dispatch( startDeletingNote() );
-        }else{
-            dispatch( removeActive() );
-        }
-    }
-
-    const onClose = () => {
-        dispatch( removeActive() );
-    }
+	const {
+        isNewNote,
+        fileInputRef,
+        dateString,
+        body, 
+        title,
+        isSaving,
+        imageUrls,
+        onInputChange, 
+        onClose,
+        onDelete,
+        onFileInputChange,
+        onSaveNote,
+    } = useNoteView();
 
 	return (
         <Grid container direction='row' justifyContent='space-between' alignItems='center' sx={{ mb: 1 }}>
             {
-                ( !note.id )?
+                ( isNewNote )?
                 <Grid container>
                 <Typography fontSize={ 30 }> New Note </Typography>
                 </Grid>
@@ -152,7 +109,7 @@ export const NoteView = () => {
             </Grid>
 
 			<ImageGallery 
-                images={ note?.imageUrls }
+                images={ imageUrls }
             />
 		</Grid>
 	)

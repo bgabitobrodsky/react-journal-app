@@ -10,6 +10,7 @@ export const journalSlice = createSlice({
     },
     reducers: {
         createNewNote: ( state ) => {
+            state.messageSaved = '';
             state.active = {
                 title:'',
                 body:'',
